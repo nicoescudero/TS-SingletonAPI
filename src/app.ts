@@ -33,7 +33,7 @@ if(!process.env.DEBUG) loggerOptions.meta = false;
 
 app.use(expressWinston.logger(loggerOptions));
 routes.push(new UserRoutes(app));
-app.get('/',(req: express.Request, res: express.Response) => { return res.send('Server on port 3000')});
+app.get('/',(req: express.Request, res: express.Response) => { return res.send('Server on port 3000');});
 
 server.listen(port, ()=>{
   routes.forEach((route: CommonRoutesConfig) => {
