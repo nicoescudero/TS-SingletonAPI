@@ -4,11 +4,12 @@ import userController from './controller/users.controller';
 
 export class UserRoutes extends CommonRoutesConfig{
   constructor(app: express.Application){
-    super(app,'UserRoutes');
+    super(app, 'UserRoutes');
   }
+  
   configureRoutes(){
     this.app.route('/users')
-    .all(userController.getUsers)
+    .get(userController.getUsers)
     .post(userController.createUser);
     this.app.route('/users/:id')
     .get(userController.getUserById)

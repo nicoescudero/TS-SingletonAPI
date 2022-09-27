@@ -4,7 +4,7 @@ import UserService from '../services/users.service';
 const log: debug.IDebugger = debug('app:user-controller');
 
 class UserController{
-  async getUsers(req: express.Request, res: express.Response){
+  async getUsers(_req: express.Request, res: express.Response){
     const users = await UserService.list(100,0);
     return res.json(users);
   }

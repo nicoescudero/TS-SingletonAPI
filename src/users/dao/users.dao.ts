@@ -37,7 +37,7 @@ class UsersDao{
   }
 
   async getUserById(id: string){
-    const user = await this.User.findOne({_id: id}).populate('User').exec();
+    const user = await this.User.findOne({_id: id}).exec();
     return user;
   }
 
@@ -51,7 +51,6 @@ class UsersDao{
     const user = await this.User.findOneAndUpdate({ _id: id},{ $set: userFields }, {new: true}).exec();
     return user;
    } catch (error) {
-    console.log(`Update User ${error}`);
     return error;
    }
   }
@@ -61,7 +60,6 @@ class UsersDao{
       const user = await this.User.findOneAndDelete({_id: id}).exec();
       return user;
     } catch (error) {
-      console.log(`Delete User ${error}`);
       return error;
     }
   }
