@@ -5,40 +5,39 @@ import * as expressWinston from 'express-winston';
 import cors from 'cors';
 import debug from 'debug';
 import dotenv from 'dotenv';
-import { CommonRoutesConfig } from './common/common.routes.config';
-import { UserRoutes } from './users/users.routes.config';
+import { MyRoutes } from './routes/index.routes';
 
 const app: express.Application = express();
 const server: http.Server = http.createServer(app);
 const debugLog: debug.IDebugger = debug('app');
 const dotenvResult = dotenv.config();
-const routes: Array<CommonRoutesConfig> = [];
 const port = 3000;
 
 const loggerOptions: expressWinston.LoggerOptions = {
-  transports: [new winston.transports.Console],
-  format: winston.format.combine(
-    winston.format.json(),
-    winston.format.prettyPrint(),
-    winston.format.colorize({ all: true}),
+    transports: [new winston.transports.Console],
+    format: winston.format.combine(
+      winston.format.json(),
+      winston.format.prettyPrint(),
+      winston.format.colorize({ all: true}),
     ),
 };
-
-app.use(express.json());
-app.use(cors());
-
+  
 if(dotenvResult.error) throw dotenvResult.error;
 if(!process.env.DEBUG) loggerOptions.meta = false;
-
-
+  
+app.use(cors());
+app.use(express.json());
 app.use(expressWinston.logger(loggerOptions));
-routes.push(new UserRoutes(app));
-app.get('/',(req: express.Request, res: express.Response) => { return res.send('Server on port 3000');});
+
+app.get('/',(_req: express.Request, res: express.Response) => { 
+    return res.send('Server on port 3000');
+});
+
+const myRoutes: MyRoutes = new MyRoutes(app);
+myRoutes.loadRoutes();
 
 server.listen(port, ()=>{
-  routes.forEach((route: CommonRoutesConfig) => {
-    debugLog(`Routes configured for ${route.name}`);
-  });
+    debugLog(`Server running at http://localhost:${port}`);
 });
 
 export default app;
