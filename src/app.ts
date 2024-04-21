@@ -5,6 +5,8 @@ import * as expressWinston from 'express-winston';
 import cors from 'cors';
 import debug from 'debug';
 import dotenv from 'dotenv';
+import swaggerUI from 'swagger-ui-express';
+import { options } from './docs/swaggerConfig';
 import { MyRoutes } from './routes/index.routes';
 
 const app: express.Application = express();
@@ -28,7 +30,7 @@ if(!process.env.DEBUG) loggerOptions.meta = false;
 app.use(cors());
 app.use(express.json());
 app.use(expressWinston.logger(loggerOptions));
-
+app.use('/docs',swaggerUI.serve, swaggerUI.setup(options));
 app.get('/',(_req: express.Request, res: express.Response) => { 
     return res.send('Server on port 3000');
 });
